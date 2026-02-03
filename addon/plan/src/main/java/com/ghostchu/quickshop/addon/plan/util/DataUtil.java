@@ -7,27 +7,27 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.html.HtmlEscapers;
+import org.jspecify.annotations.NullMarked;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.UUID;
 
+@NullMarked
 public class DataUtil {
 
   public final Main main;
 
-  public DataUtil(@NotNull final Main main) {
+  public DataUtil(final Main main) {
 
     this.main = main;
   }
 
-  @NotNull
-  public String formatEconomy(@NotNull final ShopMetricRecord record) {
+  public String formatEconomy(final ShopMetricRecord record) {
 
     final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
     if(shop == null || main.getQuickShop().getEconomyManager().provider() == null) {
@@ -37,8 +37,7 @@ public class DataUtil {
     return main.getQuickShop().getEconomyManager().provider().format(BigDecimal.valueOf(record.getTotal()), shop.getLocation().getWorld().getName(), shop.getCurrency());
   }
 
-  @NotNull
-  public String getItemName(@NotNull final DataRecord dataRecord) {
+  public String getItemName(final DataRecord dataRecord) {
 
     final ItemStack stack;
     try {
@@ -56,8 +55,7 @@ public class DataUtil {
     return HtmlEscapers.htmlEscaper().escape(name);
   }
 
-  @NotNull
-  public String getItemName(@NotNull final ItemStack stack) {
+  public String getItemName(final ItemStack stack) {
 
     String name = CommonUtil.prettifyText(stack.getType().name());
     if(stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
@@ -66,8 +64,7 @@ public class DataUtil {
     return HtmlEscapers.htmlEscaper().escape(name);
   }
 
-  @NotNull
-  public String getShopName(@NotNull final ShopMetricRecord record, @NotNull final DataRecord dataRecord) {
+  public String getShopName(final ShopMetricRecord record, final DataRecord dataRecord) {
 
     final StringBuilder nameBuilder = new StringBuilder();
     final Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
@@ -89,15 +86,13 @@ public class DataUtil {
     return HtmlEscapers.htmlEscaper().escape(nameBuilder.toString());
   }
 
-  @NotNull
-  public String loc2String(@NotNull final Location location) {
+  public String loc2String(final Location location) {
 
     final String template = "%s %s,%s,%s";
     return String.format(template, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ());
   }
 
-  @NotNull
-  public String getPlayerName(@NotNull final UUID uuid) {
+  public String getPlayerName(final UUID uuid) {
 
     if(CommonUtil.getNilUniqueId().equals(uuid)) {
       return "[Server]";

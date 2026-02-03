@@ -14,8 +14,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
+@NullMarked
 public class SubCommand_List implements CommandHandler<Player> {
 
   private final QuickShop quickshop;
@@ -36,7 +37,7 @@ public class SubCommand_List implements CommandHandler<Player> {
   }
 
   @Override
-  public void onCommand(final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+  public void onCommand(final Player sender, final String commandLabel, final CommandParser parser) {
 
     int page = 1;
     if(parser.getArgs().isEmpty()) {
@@ -59,7 +60,7 @@ public class SubCommand_List implements CommandHandler<Player> {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(@NotNull final Player sender, @NotNull final String commandLabel, @NotNull final CommandParser parser) {
+  public @Nullable List<String> onTabComplete(final Player sender, final String commandLabel, final CommandParser parser) {
 
     if(parser.getArgs().size() == 1) {
       if(quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
@@ -81,7 +82,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     lookup(sender, sender.getUniqueId(), page);
   }
 
-  private void lookupOther(@NotNull final Player sender, @NotNull final String userName, final int page) {
+  private void lookupOther(final Player sender, final String userName, final int page) {
 
     if(!quickshop.perm().hasPermission(sender, "quickshopaddon.list.other")) {
       quickshop.text().of(sender, "no-permission").send();
@@ -91,7 +92,7 @@ public class SubCommand_List implements CommandHandler<Player> {
     lookup(sender, targetUser, page);
   }
 
-  private void lookup(@NotNull final Player sender, @NotNull final UUID lookupUser, final int page) {
+  private void lookup(final Player sender, final UUID lookupUser, final int page) {
 
     String name = quickshop.getPlayerFinder().uuid2Name(lookupUser);
     if(CommonUtil.isEmptyString(name)) {

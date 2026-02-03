@@ -1,0 +1,8 @@
+Whether need NullMarked check:
+- QuickShopBukkit
+-
+
+Check onEnable in all addons's Main
+Should output a warning message if the plugin doesn't exist, but addon of that plugin exist.
+
+BigDecimal.valueOf should validate input data?

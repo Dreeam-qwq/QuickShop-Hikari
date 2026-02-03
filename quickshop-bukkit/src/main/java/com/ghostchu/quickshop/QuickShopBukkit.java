@@ -18,7 +18,6 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,7 +113,6 @@ public class QuickShopBukkit extends JavaPlugin {
    *
    * @return The fork name.
    */
-  @NotNull
   public String getFork() {
 
     return "Hikari";
@@ -276,13 +274,11 @@ public class QuickShopBukkit extends JavaPlugin {
     this.quickShop.onLoad();
   }
 
-  @NotNull
   public Logger logger() {
 
     return this.logger;
   }
 
-  @NotNull
   public Platform platform() {
 
     return this.platform;
@@ -294,13 +290,11 @@ public class QuickShopBukkit extends JavaPlugin {
    *
    * @return Plugin Version
    */
-  @NotNull
   public String getVersion() {
 
     return getDescription().getVersion();
   }
 
-  @NotNull
   public Semver getSemVersion() {
 
     try {

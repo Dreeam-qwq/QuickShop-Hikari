@@ -4,14 +4,17 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Operation to remove items
  */
+@NullMarked
 public class RemoveItemOperation implements Operation {
 
   private final ItemStack item;
@@ -20,7 +23,7 @@ public class RemoveItemOperation implements Operation {
   private final int itemMaxStackSize;
   private boolean committed;
   private boolean rollback;
-  private ItemStack[] snapshot;
+  private ItemStack @Nullable [] snapshot;
 
   /**
    * Constructor
@@ -29,7 +32,7 @@ public class RemoveItemOperation implements Operation {
    * @param amount Amount to remove
    * @param inv    The {@link InventoryWrapper} that remove from
    */
-  public RemoveItemOperation(@NotNull final ItemStack item, final int amount, @NotNull final InventoryWrapper inv) {
+  public RemoveItemOperation(final ItemStack item, final int amount, final InventoryWrapper inv) {
 
     this.item = item.clone();
     this.amount = amount;
@@ -79,6 +82,6 @@ public class RemoveItemOperation implements Operation {
   public boolean rollback() {
 
     rollback = true;
-    return inv.restoreSnapshot(snapshot);
+    return inv.restoreSnapshot(Objects.requireNonNull(snapshot));
   }
 }

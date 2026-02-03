@@ -3,8 +3,8 @@ package com.ghostchu.quickshop;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import lombok.SneakyThrows;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.io.InputStream;
 import java.util.Objects;
@@ -16,6 +16,7 @@ import java.util.Properties;
  * @author Ghost_chu
  */
 @Data
+@NullMarked
 public class BuildInfo {
 
   private final GitInfo gitInfo;
@@ -38,37 +39,23 @@ public class BuildInfo {
   public static class GitInfo {
 
     private static final String DEFAULT_VALUE = "undefined";
-    @Nullable
-    private final String branch;
+    private final @Nullable String branch;
     private final boolean dirty;
-    @Nullable
-    private final String remoteOriginUrl;
-    @Nullable
-    private final String id;
-    @Nullable
-    private final String abbrev;
-    @Nullable
-    private final String describe;
-    @Nullable
-    private final String describeShort;
-    @Nullable
-    private final String commitUsername;
-    @Nullable
-    private final String commitEmail;
-    @Nullable
-    private final String commitMessage;
-    @Nullable
-    private final String commitDate;
-    @Nullable
-    private final String buildTime;
-    @Nullable
-    private final String buildVersion;
-    @Nullable
-    private final String buildNumber;
-    @Nullable
-    private final String tags;
+    private final @Nullable String remoteOriginUrl;
+    private final @Nullable String id;
+    private final @Nullable String abbrev;
+    private final @Nullable String describe;
+    private final @Nullable String describeShort;
+    private final @Nullable String commitUsername;
+    private final @Nullable String commitEmail;
+    private final @Nullable String commitMessage;
+    private final @Nullable String commitDate;
+    private final @Nullable String buildTime;
+    private final @Nullable String buildVersion;
+    private final @Nullable String buildNumber;
+    private final @Nullable String tags;
 
-    public GitInfo(@NotNull final Properties properties) {
+    public GitInfo(final Properties properties) {
 
       this.tags = properties.getProperty("git.tags");
       this.branch = properties.getProperty("git.branch");
@@ -87,7 +74,6 @@ public class BuildInfo {
       this.buildNumber = properties.getProperty("git.build.number");
     }
 
-    @NotNull
     public String getAbbrev() {
 
       if(abbrev == null) {
@@ -96,7 +82,6 @@ public class BuildInfo {
       return abbrev;
     }
 
-    @NotNull
     public String getBranch() {
 
       if(branch == null) {
@@ -105,61 +90,51 @@ public class BuildInfo {
       return branch;
     }
 
-    @NotNull
     public String getBuildNumber() {
 
       return Objects.requireNonNullElse(buildNumber, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getBuildTime() {
 
       return Objects.requireNonNullElse(buildTime, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getBuildVersion() {
 
       return Objects.requireNonNullElse(buildVersion, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getCommitDate() {
 
       return Objects.requireNonNullElse(commitDate, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getCommitEmail() {
 
       return Objects.requireNonNullElse(commitEmail, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getCommitMessage() {
 
       return Objects.requireNonNullElse(commitMessage, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getCommitUsername() {
 
       return Objects.requireNonNullElse(commitUsername, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getDescribe() {
 
       return Objects.requireNonNullElse(describe, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getDescribeShort() {
 
       return Objects.requireNonNullElse(describeShort, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getId() {
 
       if(id == null) {
@@ -168,13 +143,11 @@ public class BuildInfo {
       return id;
     }
 
-    @NotNull
     public String getRemoteOriginUrl() {
 
       return Objects.requireNonNullElse(remoteOriginUrl, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getTags() {
 
       if(tags == null) {
@@ -194,21 +167,15 @@ public class BuildInfo {
     private static final String DEFAULT_VALUE = "undefined";
     private final boolean ci;
     private final int id;
-    @Nullable
-    private final String idName;
-    @Nullable
-    private final String tag;
-    @Nullable
-    private final String url;
-    @Nullable
-    private final String projectName;
-    @Nullable
-    private final String projectUrl;
-    @Nullable
-    private final String projectBaseName;
+    private final @Nullable String idName;
+    private final @Nullable String tag;
+    private final @Nullable String url;
+    private final @Nullable String projectName;
+    private final @Nullable String projectUrl;
+    private final @Nullable String projectBaseName;
 
 
-    public JenkinsInfo(@NotNull final Properties properties) {
+    public JenkinsInfo(final Properties properties) {
 
       this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
       final String idStr = properties.getProperty("ci.build.id");
@@ -237,7 +204,6 @@ public class BuildInfo {
       return id;
     }
 
-    @NotNull
     public String getIdName() {
 
       if(idName == null) {
@@ -246,25 +212,21 @@ public class BuildInfo {
       return idName;
     }
 
-    @NotNull
     public String getProjectBaseName() {
 
       return Objects.requireNonNullElse(projectBaseName, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getProjectName() {
 
       return Objects.requireNonNullElse(projectName, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getProjectUrl() {
 
       return Objects.requireNonNullElse(projectUrl, DEFAULT_VALUE);
     }
 
-    @NotNull
     public String getTag() {
 
       if(tag == null) {
@@ -273,7 +235,6 @@ public class BuildInfo {
       return tag;
     }
 
-    @NotNull
     public String getUrl() {
 
       if(url == null) {

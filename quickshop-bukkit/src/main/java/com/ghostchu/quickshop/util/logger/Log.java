@@ -10,8 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 
+@NullMarked
 public class Log {
 
   private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
@@ -34,13 +35,13 @@ public class Log {
     DISABLE_LOCATION_RECORDING = Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.util.logger."));
   }
 
-  public static void cron(@NotNull final String message) {
+  public static void cron(final String message) {
 
     cron(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void cron(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
+  public static void cron(final Level level, final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -67,18 +68,18 @@ public class Log {
       }
   }
 
-  public static void cron(@NotNull final Level level, @NotNull final String message) {
+  public static void cron(final Level level, final String message) {
 
     cron(level, message, Caller.create());
   }
 
-  public static void debug(@NotNull final String message) {
+  public static void debug(final String message) {
 
     debug(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void debug(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
+  public static void debug(final Level level, final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -95,19 +96,19 @@ public class Log {
     }
   }
 
-  public static void debug(@NotNull final Level level, @NotNull final String message) {
+  public static void debug(final Level level, final String message) {
 
     debug(level, message, Caller.create());
   }
 
 
-  public static void privacy(@NotNull final String message) {
+  public static void privacy(final String message) {
 
     privacy(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void privacy(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
+  public static void privacy(final Level level, final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -124,13 +125,13 @@ public class Log {
     }
   }
 
-  public static void privacy(@NotNull final Level level, @NotNull final String message) {
+  public static void privacy(final Level level, final String message) {
 
     privacy(level, message, Caller.create());
   }
 
 
-  public static void performance(@NotNull final Level level, @NotNull final String message, @NotNull final Caller caller) {
+  public static void performance(final Level level, final String message, final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -142,7 +143,6 @@ public class Log {
     }
   }
 
-  @NotNull
   public static List<Record> fetchLogs() {
 
     LOCK.readLock().lock();
@@ -153,8 +153,7 @@ public class Log {
     }
   }
 
-  @NotNull
-  public static List<Record> fetchLogs(@NotNull final Type type) {
+  public static List<Record> fetchLogs(final Type type) {
 
     LOCK.readLock().lock();
     try {
@@ -164,8 +163,7 @@ public class Log {
     }
   }
 
-  @NotNull
-  public static List<Record> fetchLogsExclude(@NotNull final Type... excludes) {
+  public static List<Record> fetchLogsExclude(final Type... excludes) {
 
     LOCK.readLock().lock();
     try {
@@ -182,8 +180,7 @@ public class Log {
     }
   }
 
-  @NotNull
-  public static List<Record> fetchLogsLevel(@NotNull final Type type, @NotNull final Level level) {
+  public static List<Record> fetchLogsLevel(final Type type, final Level level) {
 
     LOCK.readLock().lock();
     try {
@@ -193,13 +190,13 @@ public class Log {
     }
   }
 
-  public static void permission(@NotNull final String message) {
+  public static void permission(final String message) {
 
     permission(Level.INFO, message, Caller.create(3, false));
   }
 
   @ApiStatus.Internal
-  public static void permission(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
+  public static void permission(final Level level, final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -217,18 +214,18 @@ public class Log {
 
   }
 
-  public static void permission(@NotNull final Level level, @NotNull final String message) {
+  public static void permission(final Level level, final String message) {
 
     permission(level, message, Caller.create(3, false));
   }
 
-  public static void timing(@NotNull final String operation, @NotNull final Timer timer) {
+  public static void timing(final String operation, final Timer timer) {
 
     timing(Level.INFO, operation, timer, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void timing(@NotNull final Level level, @NotNull final String operation, @NotNull final Timer timer, @Nullable final Caller caller) {
+  public static void timing(final Level level, final String operation, final Timer timer, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -246,13 +243,13 @@ public class Log {
 
   }
 
-  public static void transaction(@NotNull final String message) {
+  public static void transaction(final String message) {
 
     transaction(Level.INFO, message, Caller.create());
   }
 
   @ApiStatus.Internal
-  public static void transaction(@NotNull final Level level, @NotNull final String message, @Nullable final Caller caller) {
+  public static void transaction(final Level level, final String message, @Nullable final Caller caller) {
 
     LOCK.writeLock().lock();
     try {
@@ -269,7 +266,7 @@ public class Log {
     }
   }
 
-  public static void transaction(@NotNull final Level level, @NotNull final String message) {
+  public static void transaction(final Level level, final String message) {
 
     transaction(level, message, Caller.create());
   }
@@ -289,16 +286,12 @@ public class Log {
   public static class Record {
 
     private final long timestamp = System.currentTimeMillis();
-    @NotNull
     private final Level level;
-    @NotNull
     private final Type type;
-    @NotNull
     private final String message;
-    @Nullable
-    private final Caller caller;
+    private final @Nullable Caller caller;
 
-    public Record(@NotNull final Level level, @NotNull final Type type, @NotNull final String message, @Nullable final Caller caller) {
+    public Record(final Level level, final Type type, final String message, @Nullable final Caller caller) {
 
       this.level = level;
       this.type = type;
@@ -340,15 +333,12 @@ public class Log {
 
     private static final ThreadLocal<CallerCache> CALLER_CACHE = ThreadLocal.withInitial(CallerCache::new);
 
-    @NotNull
     private final String threadName;
-    @NotNull
     private final String className;
-    @NotNull
     private final String methodName;
     private final int lineNumber;
 
-    public Caller(@NotNull final String threadName, @NotNull final String className, @NotNull final String methodName, final int lineNumber) {
+    public Caller(final String threadName, final String className, final String methodName, final int lineNumber) {
 
       this.threadName = threadName;
       this.className = className;
@@ -356,25 +346,21 @@ public class Log {
       this.lineNumber = lineNumber;
     }
 
-    @NotNull
     public static Caller create() {
 
       return create(3, false);
     }
 
-    @NotNull
     public static Caller createSync() {
 
       return create(3, false);
     }
 
-    @NotNull
     public static Caller createSync(final boolean force) {
 
       return create(3, force);
     }
 
-    @NotNull
     public static Caller create(final int steps, final boolean force) {
       if(!force) {
         if("true".equalsIgnoreCase(System.getProperty("quickshop-hikari-disable-debug-logger"))) {
@@ -412,7 +398,7 @@ public class Log {
 
     private static class CallerCache {
       int steps = -1;
-      Caller caller = null;
+      @Nullable Caller caller = null;
     }
   }
 

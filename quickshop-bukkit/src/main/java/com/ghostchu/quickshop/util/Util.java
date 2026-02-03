@@ -53,8 +53,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -83,21 +83,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.ghostchu.quickshop.menu.shared.QuickShopPage.get;
-
+@NullMarked
 public class Util {
 
   private static final Map<Material, Integer> CUSTOM_STACKSIZE = new HashMap<>();
   private static final Set<Material> SHOPABLES = new HashSet<>();
   private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
   private static int BYPASSED_CUSTOM_STACKSIZE = -1;
-  private static Yaml yaml = null;
-  private static Boolean devMode = null;
+  private static @Nullable Yaml yaml = null;
+  private static @Nullable Boolean devMode = null;
   @Setter
   private static QuickShop plugin;
   @Getter
-  @Nullable
-  private static DyeColor dyeColor = null;
+  private static @Nullable DyeColor dyeColor = null;
 
   private Util() {
 
@@ -133,7 +131,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void asyncThreadRun(@NotNull final Runnable runnable) {
+  public static void asyncThreadRun(final Runnable runnable) {
 
     if(!plugin.getJavaPlugin().isEnabled()) {
       Log.debug(Level.WARNING, "Scheduler not available, executing task on current thread...");
@@ -144,14 +142,14 @@ public class Util {
     QuickShop.folia().getScheduler().runLaterAsync(runnable, 0);
   }
 
-  public static void playClickSound(@NotNull final Player player) {
+  public static void playClickSound(final Player player) {
 
     if(plugin.getConfig().getBoolean("effect.sound.onclick")) {
       player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
     }
   }
 
-  public static boolean createShop(@NotNull final Player player, @Nullable final Block block, @NotNull final BlockFace blockFace, @NotNull final EquipmentSlot hand, @NotNull final ItemStack item) {
+  public static boolean createShop(final Player player, @Nullable final Block block, final BlockFace blockFace, final EquipmentSlot hand, final ItemStack item) {
 
     Log.debug("==== Entering Shop Creation ====");
 
@@ -278,7 +276,7 @@ public class Util {
    *
    * @return True if it can be made into a shop, otherwise false.
    */
-  public static boolean canBeShop(@NotNull final Block b) {
+  public static boolean canBeShop(final Block b) {
 
     if(isBlacklistWorld(b.getWorld())) {
       return false;
@@ -298,7 +296,7 @@ public class Util {
     return true;
   }
 
-  public static boolean isBlacklistWorld(@NotNull final World world) {
+  public static boolean isBlacklistWorld(final World world) {
 
     final List<String> whitelist = plugin.getConfig().getStringList("shop.whitelist-world");
     if(!whitelist.isEmpty()) {
@@ -315,7 +313,7 @@ public class Util {
    *
    * @return true if the world should be skipped, false otherwise
    */
-  public static boolean isDatabaseLoadingBlacklisted(@NotNull final String worldName) {
+  public static boolean isDatabaseLoadingBlacklisted(final String worldName) {
 
     final List<String> whitelist = plugin.getConfig().getStringList("database-loading-whitelist-worlds");
     if(!whitelist.isEmpty()) {
@@ -331,7 +329,7 @@ public class Util {
    *
    * @return Can or not
    */
-  public static boolean isShoppables(@NotNull final Material material) {
+  public static boolean isShoppables(final Material material) {
 
     return SHOPABLES.contains(material);
   }
@@ -345,7 +343,7 @@ public class Util {
    *
    * @return The number of items that match in this inventory.
    */
-  public static int countItems(@Nullable final InventoryWrapper inv, @NotNull final ItemStack item) {
+  public static int countItems(@Nullable final InventoryWrapper inv, final ItemStack item) {
 
     if(inv == null) {
       return 0;
@@ -377,7 +375,7 @@ public class Util {
    *
    * @return The number of shop items that match in this inventory.
    */
-  public static int countItems(@Nullable final InventoryWrapper inv, @NotNull final Shop shop) {
+  public static int countItems(@Nullable final InventoryWrapper inv, final Shop shop) {
 
     if(inv == null) {
       return 0;
@@ -407,7 +405,7 @@ public class Util {
    *
    * @return The number of shop items that can be given to the inventory safely.
    */
-  public static int countSpace(@Nullable final InventoryWrapper inv, @NotNull final Shop shop) {
+  public static int countSpace(@Nullable final InventoryWrapper inv, final Shop shop) {
 
     if(inv == null) {
       return 0;
@@ -436,7 +434,7 @@ public class Util {
    *
    * @return Game StackSize or Custom
    */
-  public static int getItemMaxStackSize(@NotNull final Material material) {
+  public static int getItemMaxStackSize(final Material material) {
 
     return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
   }
@@ -450,7 +448,7 @@ public class Util {
    *
    * @return The number of items that can be given to the inventory safely.
    */
-  public static int countSpace(@Nullable final InventoryWrapper inv, @NotNull final ItemStack item) {
+  public static int countSpace(@Nullable final InventoryWrapper inv, final ItemStack item) {
 
     if(inv == null) {
       return 0;
@@ -478,7 +476,7 @@ public class Util {
    * @param logs logs
    */
   @Deprecated(forRemoval = true)
-  public static void debugLog(@NotNull final String... logs) {
+  public static void debugLog(final String... logs) {
 
     final Log.Caller caller = Log.Caller.create();
     for(final String log : logs) {
@@ -486,7 +484,7 @@ public class Util {
     }
   }
 
-  public static BigDecimal parse(final String input) {
+  public static @Nullable BigDecimal parse(final String input) {
 
     try {
 
@@ -525,8 +523,7 @@ public class Util {
    *
    * @throws InvalidConfigurationException when failed deserialize config
    */
-  @Nullable
-  public static ItemStack deserialize(@NotNull String config) throws InvalidConfigurationException {
+  public static @Nullable ItemStack deserialize(String config) throws InvalidConfigurationException {
 
     if(yaml == null) {
       final DumperOptions yamlOptions = new DumperOptions();
@@ -601,7 +598,7 @@ public class Util {
    *
    * @return Equals or not.
    */
-  private static boolean equalsBlockStateLocation(@NotNull final Location b1, @NotNull final Location b2) {
+  private static boolean equalsBlockStateLocation(final Location b1, final Location b2) {
 
     return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2.getBlockZ());
   }
@@ -613,7 +610,7 @@ public class Util {
    *
    * @return The event is cancelled.
    */
-  public static boolean fireCancellableEvent(@NotNull final Cancellable event) {
+  public static boolean fireCancellableEvent(final Cancellable event) {
 
     if(!(event instanceof Event)) {
 
@@ -630,8 +627,7 @@ public class Util {
    *
    * @return blocked location
    */
-  @NotNull
-  public static Location getBlockLocation(@NotNull Location loc) {
+  public static Location getBlockLocation(Location loc) {
 
     loc = loc.clone();
     loc.setX(loc.getBlockX());
@@ -670,7 +666,6 @@ public class Util {
    *
    * @deprecated Use Bukkit util not this one.
    */
-  @NotNull
   public static BlockFace getYawFace(final float yaw) {
     //noinspection ConstantValue
     if(yaw > 315 && yaw <= 45) {
@@ -684,8 +679,7 @@ public class Util {
     }
   }
 
-  @NotNull
-  public static Component getItemStackName(@NotNull final ItemStack itemStack) {
+  public static Component getItemStackName(final ItemStack itemStack) {
 
     Component result = getItemCustomName(itemStack);
     if(isEmptyComponent(result)) {
@@ -699,8 +693,7 @@ public class Util {
     return result;
   }
 
-  @Nullable
-  public static Component getItemCustomName(@NotNull final ItemStack itemStack) {
+  public static @Nullable Component getItemCustomName(final ItemStack itemStack) {
 
     if(useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
       final ItemMeta meta = itemStack.getItemMeta();
@@ -746,8 +739,7 @@ public class Util {
    *
    * @return A boolean of whether the component contains the string
    */
-  @NotNull
-  public static boolean findStringInComponent(@NotNull final Component component, @NotNull final String find) {
+  public static boolean findStringInComponent(final Component component, final String find) {
 
     final String plainText = PlainTextComponentSerializer.plainText().serialize(component).toLowerCase();
     return plainText.replace(' ', '_').contains(find.toLowerCase());
@@ -761,8 +753,7 @@ public class Util {
    *
    * @return A boolean of whether the string was found in the list of components
    */
-  @NotNull
-  public static boolean findStringInList(@NotNull final List<Component> components, @NotNull final String find) {
+  public static boolean findStringInList(final List<Component> components, final String find) {
 
     for(final Component name : components) {
       if(findStringInComponent(name, find)) { return true; }
@@ -778,8 +769,7 @@ public class Util {
    *
    * @return The names of enchants contained on the enchanted item with levels
    */
-  @NotNull
-  public static List<Component> getEnchantsForItemStack(@NotNull final ItemStack itemStack) {
+  public static List<Component> getEnchantsForItemStack(final ItemStack itemStack) {
 
     final List<Component> enchants = new ArrayList<>();
     if(!itemStack.hasItemMeta()) {
@@ -810,7 +800,7 @@ public class Util {
    *
    * @return A component with the name of the Enchantment and it's Level as Roman Numerals
    */
-  public static Component enchantmentDataToComponent(@NotNull final Enchantment enchantment, @NotNull final Integer level) {
+  public static Component enchantmentDataToComponent(final Enchantment enchantment, final Integer level) {
 
     Component name;
     try {
@@ -830,8 +820,7 @@ public class Util {
     return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
   }
 
-  @NotNull
-  public static Component getFirstEnchantmentName(@NotNull final EnchantmentStorageMeta meta) {
+  public static Component getFirstEnchantmentName(final EnchantmentStorageMeta meta) {
 
     if(!meta.hasStoredEnchants()) {
       throw new IllegalArgumentException("Item does not have an enchantment!");
@@ -840,7 +829,7 @@ public class Util {
     return enchantmentDataToComponent(entry.getKey(), entry.getValue());
   }
 
-  public static int getItemTotalAmountsInMap(@NotNull final Map<Integer, ItemStack> map) {
+  public static int getItemTotalAmountsInMap(final Map<Integer, ItemStack> map) {
 
     int total = 0;
     for(final ItemStack value : map.values()) {
@@ -896,7 +885,6 @@ public class Util {
    *
    * @return the player names
    */
-  @NotNull
   public static List<String> getPlayerList() {
 
     final List<String> tabList = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
@@ -915,8 +903,7 @@ public class Util {
    *
    * @throws FileNotFoundException If the plugin's Jar file could not be found
    */
-  @NotNull
-  public static File getPluginJarFile(@NotNull final Plugin plugin) throws FileNotFoundException {
+  public static File getPluginJarFile(final Plugin plugin) throws FileNotFoundException {
 
     final String path = getPluginJarPath(plugin);
     final File file = new File(path);
@@ -933,8 +920,7 @@ public class Util {
    *
    * @return Class path
    */
-  @NotNull
-  public static String getPluginJarPath(@NotNull final Plugin plugin) {
+  public static String getPluginJarPath(final Plugin plugin) {
 
     return CommonUtil.getClassPath(plugin.getClass());
   }
@@ -946,7 +932,7 @@ public class Util {
    *
    * @return the block which is also a chest and connected to b.
    */
-  public static Block getSecondHalf(@NotNull final Block block) {
+  public static @Nullable Block getSecondHalf(final Block block) {
 
     final BlockData blockData = block.getBlockData();
     if(!(blockData instanceof final org.bukkit.block.data.type.Chest chest)) {
@@ -975,8 +961,7 @@ public class Util {
    *
    * @return the right side for given blockFace, UP and DOWN will return itself
    */
-  @NotNull
-  public static BlockFace getRightSide(@NotNull final BlockFace blockFace) {
+  public static BlockFace getRightSide(final BlockFace blockFace) {
 
     return switch(blockFace) {
       case EAST -> BlockFace.SOUTH;
@@ -994,7 +979,6 @@ public class Util {
    *
    * @return the sender unique id if sender is a player, otherwise nil unique id
    */
-  @NotNull
   public static UUID getSenderUniqueId(@Nullable final CommandSender sender) {
 
     if(sender instanceof final OfflinePlayer offlinePlayer) {
@@ -1008,7 +992,6 @@ public class Util {
    *
    * @return The material now using.
    */
-  @NotNull
   public static Material getSignMaterial() {
 
     final Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
@@ -1035,8 +1018,7 @@ public class Util {
    *
    * @return The percentage 'health' the tool has. (Opposite of total damage)
    */
-  @NotNull
-  public static String getToolPercentage(@NotNull final ItemStack item) {
+  public static String getToolPercentage(final ItemStack item) {
 
     if(!(item.getItemMeta() instanceof Damageable)) {
       Log.debug(item.getType().name() + " not Damageable.");
@@ -1053,7 +1035,6 @@ public class Util {
    *
    * @return vertical BlockFace list (unmodifiable)
    */
-  @NotNull
   public static List<BlockFace> getVerticalFacing() {
 
     return VERTICAL_FACING;
@@ -1156,7 +1137,7 @@ public class Util {
    * @deprecated Use QuickShopAPI#getShopItemBlackList() instead
    */
   @Deprecated(forRemoval = true)
-  public static boolean isBlacklisted(@NotNull final ItemStack stack) {
+  public static boolean isBlacklisted(final ItemStack stack) {
 
     if(plugin == null) {
       throw new IllegalStateException("Plugin not fully started yet");
@@ -1221,7 +1202,7 @@ public class Util {
    *
    * @return yes or not
    */
-  public static boolean isDyes(@NotNull final Material material) {
+  public static boolean isDyes(final Material material) {
 
     return material.name().toUpperCase().endsWith("_DYE");
   }
@@ -1233,7 +1214,7 @@ public class Util {
    *
    * @return true if the given location is loaded or not.
    */
-  public static boolean isLoaded(@NotNull final Location loc) {
+  public static boolean isLoaded(final Location loc) {
 
     if(!loc.isWorldLoaded()) {
       return false;
@@ -1254,7 +1235,7 @@ public class Util {
    *
    * @return boolean Available
    */
-  public static boolean isMethodAvailable(@NotNull final String className, final String method, final Class<?>... args) {// nosemgrep
+  public static boolean isMethodAvailable(final String className, final String method, final Class<?>... args) {// nosemgrep
     try {
       final Class<?> clazz = Class.forName(className);
       try {
@@ -1276,7 +1257,7 @@ public class Util {
    *
    * @return true if a nearby shop was found, false otherwise.
    */
-  public static boolean isOtherShopWithinHopperReach(@NotNull final Block b, @NotNull final Player p) {
+  public static boolean isOtherShopWithinHopperReach(final Block b, final Player p) {
 
     final Block bshop = Util.getAttached(b);
     if(bshop == null) {
@@ -1296,8 +1277,7 @@ public class Util {
    *
    * @return The block the sign is attached to
    */
-  @Nullable
-  public static Block getAttached(@NotNull final Block b) {
+  public static @Nullable Block getAttached(final Block b) {
 
     final BlockData blockData = b.getBlockData();
     if(blockData instanceof final Directional directional) {
@@ -1312,7 +1292,7 @@ public class Util {
    *
    * @return Returns true if the item is a tool (Has durability) or false if it doesn't.
    */
-  public static boolean isTool(@NotNull final Material mat) {
+  public static boolean isTool(final Material mat) {
 
     return mat.getMaxDurability() != 0;
   }
@@ -1326,7 +1306,7 @@ public class Util {
    * @return The location the player should be facing to have their crosshairs on the location
    * lookAt Kudos to bergerkiller for most of this function
    */
-  public static @NotNull Location lookAt(@NotNull Location loc, @NotNull final Location lookat) {
+  public static Location lookAt(Location loc, final Location lookat) {
     // Clone the loc to prevent applied changes to the input loc
     loc = loc.clone();
     // Values of change in distance (make it relative)
@@ -1362,7 +1342,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void regionThread(final Location location, @NotNull final Runnable runnable) {
+  public static void regionThread(final Location location, final Runnable runnable) {
     //QuickShop.folia().getScheduler().runLater(runnable, 1);
     QuickShop.folia().getScheduler().runAtLocationLater(location, runnable, 1);
   }
@@ -1373,7 +1353,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void mainThreadRun(@NotNull final Runnable runnable) {
+  public static void mainThreadRun(final Runnable runnable) {
 
     QuickShop.folia().getScheduler().runLater(runnable, 1);
   }
@@ -1384,7 +1364,7 @@ public class Util {
    *
    * @param runnable The runnable
    */
-  public static void mainThreadRun(@NotNull final Runnable runnable, final long delay) {
+  public static void mainThreadRun(final Runnable runnable, final long delay) {
 
     QuickShop.folia().getScheduler().runLater(runnable, delay);
   }
@@ -1396,8 +1376,7 @@ public class Util {
    *
    * @return String serialized itemStack
    */
-  @NotNull
-  public static String serialize(@NotNull final ItemStack iStack) {
+  public static String serialize(final ItemStack iStack) {
 
     final YamlConfiguration cfg = new YamlConfiguration();
     cfg.set("item", iStack);
@@ -1410,7 +1389,7 @@ public class Util {
    * @param plugin Plugin instance
    * @param clazz  Class to unregister
    */
-  public static void unregisterListenerClazz(@NotNull final Plugin plugin, @NotNull final Class<? extends Listener> clazz) {
+  public static void unregisterListenerClazz(final Plugin plugin, final Class<? extends Listener> clazz) {
 
     for(final RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
       if(registeredListener.getListener().getClass().equals(clazz)) {

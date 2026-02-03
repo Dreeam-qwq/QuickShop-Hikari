@@ -11,7 +11,6 @@ import com.ghostchu.quickshop.api.event.settings.type.ShopNameEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopOwnerEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopPriceEvent;
 import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEnhancedEvent;
-import com.ghostchu.quickshop.api.event.settings.type.ShopTypeEvent;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.PackageUtil;
@@ -32,13 +31,13 @@ import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.Nullable;
 
 public final class Main extends JavaPlugin implements Listener {
 
   static Main instance;
   private QuickShop plugin;
-  private DynmapCommonAPI dynmapAPI;
+  private @Nullable DynmapCommonAPI dynmapAPI;
   private MarkerAPI markerAPI;
 
   @Override
@@ -167,13 +166,11 @@ public final class Main extends JavaPlugin implements Listener {
     Util.mainThreadRun(()->updateShopMarker(event.shop()));
   }
 
-  @NotNull
-  public String plain(@NotNull final Component component) {
+  public String plain(final Component component) {
 
     return PlainTextComponentSerializer.plainText().serialize(component);
   }
 
-  @NotNull
   public TextManager text() {
 
     return plugin.getTextManager();

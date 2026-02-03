@@ -18,7 +18,6 @@ import org.bukkit.World;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +39,7 @@ public class SignHooker {
 
     chunkAdapter = new PacketAdapter(PLUGIN.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
       @Override
-      public void onPacketSending(@NotNull final PacketEvent event) {
+      public void onPacketSending(final PacketEvent event) {
         //is really full chunk data
         //In 1.17, this value was removed, so read safely
         final Boolean boxedIsFull = event.getPacket().getBooleans().readSafely(0);
